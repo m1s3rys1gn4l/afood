@@ -4,6 +4,7 @@
 /public/build
 /storage/*.key
 /vendor
+/aFood_app
 
 # Builder addon release zips produced by `npm run package:addon`
 /releases

@@ -433,8 +433,7 @@ let tour = new Tour({
 });
 $(document).on("click", ".instruction-Modal-Close", function () {
     $("#instruction-modal").hide();
-    tour.init();
-    tour.start();
+    // Auto-start disabled — still reachable manually via .restart-Tour.
 });
 
 $(document).on("click", ".email-Modal-Close", function () {

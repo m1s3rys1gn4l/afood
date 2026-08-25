@@ -352,6 +352,11 @@
             window.startV2Tour({ restart: true });
         });
 
+        // Auto-start disabled — the tour is still available on demand via
+        // window.startV2Tour() / the .v2-replay-tour trigger, it just no
+        // longer pops up automatically on first visit.
+        return;
+        // eslint-disable-next-line no-unreachable
         var seen = false;
         try { seen = localStorage.getItem(STORAGE_KEY) === '1'; } catch (e) {}
         if (seen) return;

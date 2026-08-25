@@ -386,10 +386,12 @@
                             <span class="v2-dot v2-dot--violet"></span><span class="v2-label">{{ translate('WebSocket Configuration') }}</span>
                             <button type="button" class="v2-pin" data-pin="sys-ws" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>
                         </a>
+                        @if(false)
                         <a class="v2-nav-item {{ $is('admin/business-settings/addon-activation*') ? 'is-active' : '' }}" href="{{ route('admin.business-settings.addon-activation.index') }}" data-id="sys-add">
                             <span class="v2-dot v2-dot--amber"></span><span class="v2-label">{{ translate('Addon Activation') }}</span>
                             <button type="button" class="v2-pin" data-pin="sys-add" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>
                         </a>
+                        @endif
                         @endif
                         @if($can_sys_addons)
                         <a class="v2-nav-item {{ $is('admin/business-settings/system-addon*') ? 'is-active' : '' }}" href="{{ route('admin.business-settings.system-addon.index') }}" data-id="sys-sa">

@@ -33,11 +33,6 @@
                         <!-- End Keyboard Shortcuts Toggle -->
                         <a class="list-separator-link" href="{{route('admin.dashboard')}}">{{translate('messages.home')}}</a>
                     </li>
-                    <li class="list-inline-item d-inline-block">
-                        <label class="badge badge-soft-primary m-0">
-                            {{translate('messages.software_version')}} : {{env('SOFTWARE_VERSION')}}
-                        </label>
-                    </li>
                 </ul>
                 <!-- End List Dot -->
             </div>

@@ -42,7 +42,8 @@ body.v2-chrome #sidebarCompact,
 body.v2-chrome .navbar-vertical-aside,
 body.v2-chrome > #header,
 body.v2-chrome > header.navbar:not(.v2-topbar),
-body.v2-chrome .__nav-module {
+body.v2-chrome .__nav-module,
+body.v2-chrome .toggle-tour {
     display: none !important;
 }
 

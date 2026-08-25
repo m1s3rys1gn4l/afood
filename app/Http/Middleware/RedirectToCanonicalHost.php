@@ -23,6 +23,14 @@ class RedirectToCanonicalHost
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Mobile app / API clients hit a fixed host and expect a direct response,
+        // not a redirect (POST bodies don't survive a 301 the way browsers handle
+        // it). The API routes are host-agnostic (see RouteServiceProvider), so
+        // there's nothing to canonicalize here anyway.
+        if ($request->is('api/*')) {
+            return $next($request);
+        }
+
         $canonical = config('app.host_domain');
 
         if ($canonical) {

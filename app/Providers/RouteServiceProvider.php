@@ -50,6 +50,22 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
 
             $namespace = $this->namespace;
+
+            // Mobile apps hit a fixed API host and don't care about www/apex
+            // canonicalization — that's a web/SEO/admin-panel concern. Keeping
+            // the API routes host-agnostic means they always resolve regardless
+            // of which host variant the client used, and RedirectToCanonicalHost
+            // (which also skips api/* explicitly) never needs to 301 them.
+            Route::prefix('api/v1')
+                ->middleware('api')
+                ->namespace($namespace)
+                ->group(base_path('routes/api/v1/api.php'));
+
+            Route::prefix('api/v2')
+                ->middleware('api')
+                ->namespace($namespace)
+                ->group(base_path('routes/api/v2/api.php'));
+
             $registerHostRoutes = function () use ($namespace) {
                 Route::middleware('web')
                     ->namespace($namespace)
@@ -64,16 +80,6 @@ class RouteServiceProvider extends ServiceProvider
                     ->middleware('web')
                     ->namespace($namespace)
                     ->group(base_path('routes/vendor.php'));
-
-                Route::prefix('api/v1')
-                    ->middleware('api')
-                    ->namespace($namespace)
-                    ->group(base_path('routes/api/v1/api.php'));
-
-                Route::prefix('api/v2')
-                    ->middleware('api')
-                    ->namespace($namespace)
-                    ->group(base_path('routes/api/v2/api.php'));
 
                 //new routes
                 Route::prefix('admin')

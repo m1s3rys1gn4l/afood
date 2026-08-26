@@ -82,7 +82,10 @@ trait  SmsGateway
             return self::alphanet_sms($receiver, $otp);
         }
 
-
+        $config = self::get_settings('reve_sms');
+        if (isset($config) && $config['status'] == 1) {
+            return self::reve_sms($receiver, $otp);
+        }
 
         return 'not_found';
     }
@@ -611,6 +614,49 @@ trait  SmsGateway
 
 
 
+
+    // REVE SMS (local Bangladesh gateway, smpp.revesms.com) — plain GET API,
+    // responds {"Status":"0","Text":"ACCEPTD","Message_ID":"..."} on success,
+    // any other Status value means it was rejected.
+    public static function reve_sms($receiver, $otp)
+    {
+        $config = self::get_settings('reve_sms');
+        $response = 'error';
+        if (isset($config) && $config['status'] == 1) {
+            $receiver = str_replace('+', '', $receiver);
+            $message = str_replace('#OTP#', $otp, $config['otp_template']);
+
+            $url = 'https://smpp.revesms.com:7790/sendtext?' . http_build_query([
+                'apikey' => $config['api_key'],
+                'secretkey' => $config['secret_key'],
+                'callerID' => $config['sender_id'],
+                'toUser' => $receiver,
+                'messageContent' => $message,
+            ]);
+
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+            ));
+            $result = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+
+            if (!$err) {
+                $decoded = json_decode($result, true);
+                $response = (isset($decoded['Status']) && $decoded['Status'] == '0') ? 'success' : 'error';
+            } else {
+                $response = 'error';
+            }
+        }
+        return $response;
+    }
 
     public static function get_settings($name)
     {

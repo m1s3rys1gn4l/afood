@@ -26,7 +26,7 @@ class SMSModuleController extends Controller
                 }
             }
         }
-        $data_values=  Setting::where('settings_type','sms_config')->whereIn('key_name', ['twilio','nexmo','2factor','msg91','alphanet_sms'])->orderByDesc('is_active')->get() ?? [];
+        $data_values=  Setting::where('settings_type','sms_config')->whereIn('key_name', ['twilio','nexmo','2factor','msg91','alphanet_sms','reve_sms'])->orderByDesc('is_active')->get() ?? [];
         return view('admin-views.business-settings.sms-index',compact('data_values','published_status','payment_url'));
     }
 
@@ -82,6 +82,14 @@ class SMSModuleController extends Controller
                 'sender_id' =>$request['sender_id'] ?? null,
                 'otp_template' =>$request['otp_template'],
             ];
+        } elseif ($module == 'reve_sms') {
+            $additional_data = [
+                'status' => $request['status'],
+                'api_key' => $request['api_key'],
+                'secret_key' => $request['secret_key'],
+                'sender_id' => $request['sender_id'],
+                'otp_template' => $request['otp_template'],
+            ];
         }
 
         $data= ['gateway' => $module ,
@@ -99,7 +107,7 @@ class SMSModuleController extends Controller
     ]);
 
     if ($request['status'] == 1) {
-        foreach (['twilio','nexmo','2factor','msg91','alphanet_sms'] as $gateway) {
+        foreach (['twilio','nexmo','2factor','msg91','alphanet_sms','reve_sms'] as $gateway) {
             if ($module != $gateway) {
                 $keep = Setting::where(['key_name' => $gateway, 'settings_type' => 'sms_config'])->first();
                 if (isset($keep)) {

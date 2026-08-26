@@ -14033,4 +14033,8 @@ Smartly or Earn. ',
   'If you already created Services without tax then go to edit Service and update tax.' => 'If you already created Services without tax then go to edit Service and update tax.',
   'go_to_the_pinterest_tag_id_section_under_marketing_tools.' => 'Go to the pinterest tag id section under marketing tools.',
   'no_payment_gateway_found' => 'No payment gateway found',
+  'aFood' => 'AFood',
+  'reve_sms' => 'Reve sms',
+  'secret_key' => 'Secret key',
+  'sender_id' => 'Sender id',
 );

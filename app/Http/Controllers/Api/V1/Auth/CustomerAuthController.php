@@ -1126,7 +1126,9 @@ class CustomerAuthController extends Controller
             'name' => 'required',
             'login_type' => 'required|in:otp,social,manual',
             'phone' => 'required|min:9|max:14',
-            'email' => 'required|email',
+            // Social login always supplies a real email from the provider, so keep it
+            // required there; otp/manual sign-up doesn't collect one, so it's optional.
+            'email' => $request->login_type == 'social' ? 'required|email' : 'nullable|email',
         ];
 
         if ($request->login_type == 'social') {
